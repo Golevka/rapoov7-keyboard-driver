@@ -11,16 +11,16 @@ The HID descriptor of interface #3 sent by the device is probably broken so the
 host usbhid driver module cannot find a proper interrupt input endpoint, we
 have to turn to use the most basic and simple Boot Protocol. The weird thing
 is: this device could work well in BIOS setup and grub 2, which means that the
-HID boot protocol is supported and worked well, but it could not work with
-linux usbkbd (HIDBP keyboard support) module. So I have to dig into USB 1.1 HID
-specification to figure out if the implemetation of the device or the usbkbd
-module violated the standard.
+HID boot protocol is supported and worked, but it could not work with linux
+usbkbd (HIDBP keyboard support) module. So I have to dig into USB 1.1 HID
+specification to figure out if the implemetation of the device or usbkbd module
+violated the standard.
 
 The key to this problem was lying on pg.54 of HID 1.1 spec documentation: it
 said that all devices defaults to report protocol when initialized, and the
 host should always issue a SET_PROTOCOL control message and should not make any
 assumptions about the device's state. So I added a set protocol request to
-usbkbd.c and it fixed the problem.
+usbkbd.c and fixed the problem.
 
 ** Future works
 
