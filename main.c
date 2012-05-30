@@ -52,7 +52,7 @@ static const unsigned char usb_kbd_keycode[256] = {
 	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 	  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	 29, 42, 56,125, 97, 54,100,126,164,166,165,163,161,115,114,113,
+         29, 42, 56,125, 97, 54,100,126,164,166,165,163,161,115,114,113,
 	150,158,159,128,136,177,178,176,142,152,173,140
 };
 
@@ -120,7 +120,7 @@ static void usb_kbd_irq(struct urb *urb)
                 input_report_key(kbd->dev, usb_kbd_keycode[kbd->new[i]], 1);
             else
                 hid_info(urb->dev,
-                    "Unknown key (scancode %#x) released.\n",
+                    "Unknown key (scancode %#x) pressed.\n",
                     kbd->new[i]);
         }
     }
@@ -359,10 +359,22 @@ static int usb_kbd_probe(struct usb_interface *iface,
         0x21,     /* bRequestType */
         0,        /* set to boot protocol */
         interface->desc.bInterfaceNumber, /* wIndex */
-        NULL, 0, /* no data to send */
+        NULL, 0,  /* no data to send */
         0);
 
     printk(KERN_ALERT "set protocol emitted, retval: %d\n", ret);
+
+    /* set idle to inhibit report messages */
+    ret = usb_control_msg(dev, usb_sndctrlpipe(dev,0),
+        0x0A,     /* SET_IDLE */
+        0x21,     /* bRequestType */
+        0,        /* inhibit forever */
+        interface->desc.bInterfaceNumber, /* wIndex */
+        NULL, 0,  /* no data to send */
+        0);
+
+    printk(KERN_ALERT "set idle emitted, retval: %d\n", ret);
+
     return 0;
 
 fail2:
