@@ -19,11 +19,17 @@ violated the standard.
 The key to this problem was lying on pg.54 of HID 1.1 spec documentation: it
 said that all devices defaults to report protocol when initialized, and the
 host should always issue a SET_PROTOCOL control message and should not make any
-assumptions about the device's state. So I added a set protocol request to
-usbkbd.c and fixed the problem.
+assumptions about the device's state. So I added a set protocol and set idle
+request to usbkbd.c and fixed the problem.
 
 ** Future works
 
 Maybe we should fix the broken HID descriptor instead of using the old crappy
 boot protocol, just like hid-cherry.c (in linux source tree) for Cherry
 Cymotion Keyboard.
+
+** Attention
+
+Do not touch those volume control keys and the [M] key at the upper right
+corner, or it would drive all keyboards attached to your system crazy. Try
+pressing =Ctrl= + =Shift= or =Ctrl= + =Shift= + =Alt= to make them calm down.

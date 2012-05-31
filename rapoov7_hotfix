@@ -1,4 +1,4 @@
 # make the priority of our hotfix module higher than system modules
 sudo rmmod usbhid hid
-sudo insmod main.ko
+sudo insmod rapoov7_hotfix.ko
 sudo modprobe usbhid
