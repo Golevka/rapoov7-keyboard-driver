@@ -1,7 +1,7 @@
 #include "hidbp_mod.h"
 
 
-/* Handle (LEDs) events */
+/* callback routine for input->event to handle (LEDs) events */
 int hidbp_keyboard_event(struct input_dev *dev, unsigned int type,
     unsigned int code, int value)
 {

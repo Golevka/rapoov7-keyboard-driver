@@ -24,6 +24,7 @@ void destroy_hidbp_keyboard(struct usb_device *dev, struct hidbp_keyboard *kbd)
 }
 
 
+/* callback for input_dev->open */
 int hidbp_keyboard_open(struct input_dev *dev)
 {
     struct hidbp_keyboard *kbd = input_get_drvdata(dev);
@@ -35,6 +36,7 @@ int hidbp_keyboard_open(struct input_dev *dev)
     return 0;
 }
 
+/* callback for input_dev->close */
 void hidbp_keyboard_close(struct input_dev *dev)
 {
     struct hidbp_keyboard *kbd = input_get_drvdata(dev);

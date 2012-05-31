@@ -61,8 +61,8 @@ int  create_hidbp_keyboard(struct usb_device *dev, struct hidbp_keyboard *kbd);
 void destroy_hidbp_keyboard(struct usb_device *dev, struct hidbp_keyboard *kbd);
 
 
-int  hidbp_keyboard_open(struct input_dev *dev);
-void hidbp_keyboard_close(struct input_dev *dev);
+int  hidbp_keyboard_open(struct input_dev *dev);    /* callback for input->open */
+void hidbp_keyboard_close(struct input_dev *dev);   /* callback for input->close */
 
 
 /* driver probe routine */
@@ -73,10 +73,9 @@ int hidbp_keyboard_probe(
 void hidbp_keyboard_irq(struct urb *urb);
 
 /* LEDs control routines */
-int hidbp_keyboard_event(
+int hidbp_keyboard_event(       /* callback for input->event */
     struct input_dev *dev, unsigned int type, unsigned int code, int value);
 void hidbp_keyboard_led(struct urb *urb);
-
 
 /* device disconnect callback routine */
 void hidbp_keyboard_disconnect(struct usb_interface *intf);

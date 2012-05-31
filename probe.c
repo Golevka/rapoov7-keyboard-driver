@@ -1,7 +1,8 @@
 #include "hidbp_mod.h"
 
 
-
+/* Initialize the global keyboard status info structure for associated
+ * keyboard */
 static int __initialize_hidbp_keyboard_info(
     struct hidbp_keyboard *kbd, 
     struct usb_device *dev, struct input_dev *input_dev)
@@ -22,6 +23,8 @@ static int __initialize_hidbp_keyboard_info(
     return 0;
 }
 
+/* Configure input subsystem attached to this device to accept certain kinds of
+ * inputs/events */
 static void __input_device_set_key(struct input_dev *input_dev)
 {
     int i = 0;   /* loop counter for keycodes */
@@ -43,6 +46,7 @@ static void __input_device_set_key(struct input_dev *input_dev)
                                           * small fix */
 }
 
+/* Initialize the input subsystem driver and attach it to the usb device */
 static void __initialize_input_device(
     struct hidbp_keyboard *kbd,
     struct usb_interface *iface, struct usb_device *dev, 
@@ -65,6 +69,7 @@ static void __initialize_input_device(
     input_dev->close = hidbp_keyboard_close;
 }
 
+/* Initialize URBs for keystrokes irq and LEDs control */
 static void __initialize_urb(
     struct hidbp_keyboard *kbd, struct usb_device *dev, 
     struct usb_host_interface *interface, struct usb_endpoint_descriptor *endpoint)
@@ -116,6 +121,8 @@ static void __fix__set_protocol(struct usb_device *dev, struct usb_host_interfac
         0);
 }
 
+
+/* The main probe routine */
 int hidbp_keyboard_probe(
     struct usb_interface *iface, const struct usb_device_id *id)
 {
@@ -125,7 +132,7 @@ int hidbp_keyboard_probe(
     struct hidbp_keyboard          *kbd;
     struct input_dev               *input_dev;
 
-    if (interface->desc.bNumEndpoints != 1 ||  /* more than 1 EPs */
+    if (interface->desc.bNumEndpoints != 1 ||   /* more than 1 EPs */
         !usb_endpoint_is_int_in(endpoint))      /* EP is not interrupt IN */
         return -ENODEV;
 

@@ -19,7 +19,8 @@ MODULE_LICENSE(DRIVER_LICENSE);
 #define RAPOO_V7_PRODUCT_ID  0xa059
 
 
-static struct usb_device_id hidbp_keyboard_id_table [] = {
+static struct usb_device_id hidbp_keyboard_id_table [] =
+{
     { USB_DEVICE(RAPOO_V7_VENDOR_ID, RAPOO_V7_PRODUCT_ID) },
     { /* Terminating entry */ }
 };
